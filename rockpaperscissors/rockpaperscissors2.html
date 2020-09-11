@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title id="title">Hola</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		html {display: table; margin: auto; padding-top: 10px;}
+		body {display: table-cell; vertical-align: middle; text-align: center; margin: auto;}
+		.img {height: 80px; width: 80px;}
+		.img2 {height: 120px; width: 120px;}
+		#playButton {height: 50px; width: 200px; margin-bottom: 10px;}
+		#screenDiv {border: 5px solid black; vertical-align: middle; padding: 4px; height: 450px;}
+		#leftScreen {float: left; border-right: 2px solid black; padding: 8px;}
+		#rightScreen {float: right; padding: 8px;}
+		/*  #roundImageDiv {transition: all 1s; max-height: 200px; border: 2px solid red;} */
+		#scoreboard {height: 160px; overflow-y: scroll;}
+		.lowMargin {margin: 0;}
+	</style>
+</head>
+<body>
+	<div id="screenDiv">
+	<div id="leftScreen">
+		<p class="lowMargin"> Ditt valg:  </p>
+		<button id="rock"> <img src="rock.png" class="img"> </button>
+		<button id="scissors"> <img src="scissors.png" class="img"> </button>
+		<button id="paper"> <img src="paper.png" class="img"> </button>
+		<br> <hr>
+		<button id="playButton">Spill</button>
+		<p id="score"> </p> <hr>
+		<p id="scoreboard" id="scoreboard">  </p>
+	</div>
+
+	<div id="rightScreen">
+		<p class="lowMargin"> Denne runden: </p> <br> <br> <br> <br>
+		<div id="roundImageDiv">
+			<img id="userPickImage" class="img2">
+			<img id="aiPickImage" class="img2">
+		</div>
+	<br> 
+	<p id="hint"> Velg og spill </p>
+	<p id="hint2">  </p>
+	<p id="hint3">  </p>
+	<br> 
+	</div>
+</div>
+<script type="text/javascript">
+	var playButton = document.getElementById("playButton");
+	var title = document.getElementById("title");
+	var rockButton = document.getElementById("rock");
+	var paperButton = document.getElementById("paper");
+	var scissorsButton = document.getElementById("scissors");
+	var hint = document.getElementById("hint");
+	var hint2 = document.getElementById("hint2");
+	var hint3 = document.getElementById("hint3");
+	var aiPick = 0;
+	var userPick = 0;
+	var resultat = 0;
+	var userScore = 0;
+	var aiScore = 0;
+	var userPickImage = document.getElementById("userPickImage");
+	var aiPickImage = document.getElementById("aiPickImage");
+	var scoreboard = document.getElementById("scoreboard");
+	var screenDiv = document.getElementById("screenDiv");
+
+	rockButton.onclick = function(){
+		userPick = "rock";
+		hint.innerHTML = "Du valgte stein.";
+		userPickImage.src="rock.png";
+	}
+	
+	paperButton.onclick = function(){
+		userPick = "paper";
+		hint.innerHTML = "Du valgte papir.";
+		userPickImage.src="paper.png";
+
+	}
+	
+	scissorsButton.onclick = function(){
+		userPick = "scissors";
+		hint.innerHTML = "Du valgte saks.";
+		userPickImage.src="scissors.png";
+
+	}
+	playButton.onclick = function(){
+		if (userPick == "0") {
+			hint.innerHTML = "Du må velge noe da";
+		} else {
+		aiPicker();
+		scoreboard.innerHTML += userPick + " : " + aiPick + "<br>";
+		scoreboard.scrollTop = scoreboard.scrollHeight;
+		checkWinner(userPick, aiPick);
+	}
+
+	}
+
+	function aiPicker(){
+		var randomNumber = Math.floor(Math.random()*3);
+		if (randomNumber == 0) {
+			aiPick = "rock";
+			aiPickImage.src="rock.png";
+			hint2.innerHTML="AI valgte stein."
+		} else if (randomNumber == 1) {
+			aiPick = "paper";
+			aiPickImage.src="paper.png";
+			hint2.innerHTML="AI valgte papir."
+		} else if (randomNumber == 2) {
+			aiPick = "scissors";
+			aiPickImage.src="scissors.png";
+			hint2.innerHTML="AI valgte saks."
+		} 
+	}
+	function checkWinner(userPick, aiPick){
+		if (userPick == aiPick) {
+			resultat = "tie";
+			title.innerHTML = "Likt.";
+			hint3.innerHTML = "Det ble likt."
+		} else if (userPick == "rock" && aiPick == "scissors" || userPick == "paper" && aiPick == "rock" || userPick == "scissors" && aiPick == "paper") {
+			resultat = "win";
+			userScore ++;
+			score.innerHTML = "Du: " + userScore + " // AI: " + aiScore;
+			title.innerHTML = "Vinner!";
+			hint3.innerHTML = "Du vant."
+		} else if (userPick == "rock" && aiPick == "paper" || userPick == "paper" && aiPick == "scissors" || userPick == "scissors" && aiPick == "rock") {
+			resultat = "lose";
+			aiScore ++;
+			score.innerHTML = "Du: " + userScore + " // AI: " + aiScore;
+			title.innerHTML = "Taper lol";
+			hint3.innerHTML = "Du tapte :(."
+		} else {
+			resultat = "error";
+			title.innerHTML = "Error!";
+		}
+	}
+
+
+</script>
+</body>
+</html>
